@@ -1,5 +1,18 @@
 USE ecommerce_db;
 
+INSERT INTO Categories (category_name, description) VALUES
+('Electronics', 'Electronic gadgets and devices'),
+('Clothing', 'Men and Women clothing'),
+('Books', 'Educational and Story books'),
+('Home Appliances', 'Home and Kitchen appliances'),
+('Sports', 'Sports equipment');
+
+INSERT INTO Customers (first_name, last_name, email, phone, city, state) VALUES
+('Rahul', 'Sharma', 'rahul.sharma@gmail.com', '9876543210', 'Pune', 'Maharashtra'),
+('Priya', 'Patil', 'priya.patil@gmail.com', '9876543211', 'Mumbai', 'Maharashtra'),
+('Amit', 'Verma', 'amit.verma@gmail.com', '9876543212', 'Nagpur', 'Maharashtra'),
+('Sneha', 'Kulkarni', 'sneha.kulkarni@gmail.com', '9876543213', 'Nashik', 'Maharashtra'),
+('Rohan', 'Joshi', 'rohan.joshi@gmail.com', '9876543214', 'Kolhapur', 'Maharashtra');
 
 INSERT INTO Products (product_name, category_id, price, stock_quantity) VALUES
 ('Laptop', 1, 65000.00, 25),
