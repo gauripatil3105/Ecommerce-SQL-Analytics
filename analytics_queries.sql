@@ -159,3 +159,71 @@ ON c.customer_id = o.customer_id
 GROUP BY c.first_name
 ORDER BY total_spent DESC
 LIMIT 1;
+
+-- Query 23: Customers Who Placed More Than One Order
+SELECT c.customer_id,c.first_name,c.last_name,COUNT(o.order_id) AS total_order
+FROM Customers c
+INNER JOIN Orders o
+ON c.customer_id=o.customer_id
+GROUP BY c.customer_id,c.first_name,c.last_name
+HAVING COUNT(o.order_id)>1;
+
+-- Query 24: Categories Having More Than One Product
+SELECT c.category_name,COUNT(p.product_id) AS total_products
+FROM Categories c
+INNER JOIN Products p
+ON c.category_id=p.category_id
+GROUP BY category_name
+HAVING COUNT(p.product_id)>1;
+
+-- Query 25: Products Costing More Than Average Price
+SELECT product_name,price
+FROM Products
+WHERE price>
+(SELECT AVG(price)
+FROM Products
+);
+
+-- Query 26: Products Never Ordered
+SELECT product_name
+FROM Products 
+WHERE product_id NOT IN(
+SELECT product_id
+FROM order_Items);
+
+-- Query 27: Customers Who Ordered a Laptop
+SELECT c.first_name,c.last_name
+FROM Customers c
+INNER JOIN Orders o
+ON c.customer_id=o.customer_id
+INNER JOIN Order_Items oi
+ON o.order_id=oi.order_id
+INNER JOIN Products p
+ON oi.product_id=p.product_id
+WHERE product_name='laptop';
+
+-- Query 28: Orders Above Average Order Amount
+SELECT order_id,total_amount
+FROM Orders
+WHERE total_amount>(
+SELECT AVG(total_amount)
+FROM Orders);
+
+-- Query 29: Most Expensive Product
+SELECT product_name, price
+FROM Products
+WHERE price = (
+    SELECT MAX(price)
+    FROM Products
+);
+
+-- Query 30 Customers Who Paid Using UPI
+SELECT first_name, last_name
+FROM Customers
+WHERE customer_id IN (
+    SELECT o.customer_id
+    FROM Orders o
+    JOIN Payments p
+    ON o.order_id = p.order_id
+    WHERE p.payment_method = 'UPI'
+);
