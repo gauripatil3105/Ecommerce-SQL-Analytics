@@ -24,7 +24,7 @@ INSERT INTO Products (product_name, category_id, price, stock_quantity) VALUES
 ('Data Structures Book', 3, 850.00, 30),
 ('Mixer Grinder', 4, 4500.00, 20),
 ('Cricket Bat', 5, 2200.00, 35),
-('Football', 5, 900.00, 45);
+('Football', 5, 850.00, 45);
 
 SELECT * FROM Products;
 

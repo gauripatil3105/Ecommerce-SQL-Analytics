@@ -227,3 +227,90 @@ WHERE customer_id IN (
     ON o.order_id = p.order_id
     WHERE p.payment_method = 'UPI'
 );
+
+-- Query 31: Customers Who Spent More Than ₹10,000
+WITH CustomerSpending AS
+(
+SELECT customer_id,SUM(total_amount) AS total_spent
+FROM Orders
+GROUP BY customer_id)
+
+SELECT customer_id,total_spent
+FROM CustomerSpending
+WHERE total_spent>10000;
+
+-- Query 32: Category-wise Average Product Price
+WITH CategoryAverage AS
+(
+SELECT category_id, AVG(price) AS avgprice
+FROM Products
+GROUP BY category_id)
+
+SELECT category_name,avgprice
+FROM  CategoryAverage ca
+INNER JOIN Categories c
+ON ca.category_id=c.category_id;
+
+-- Query 33: Assign a unique rank to each product based on price (highest price first).
+SELECT product_name,price,
+ROW_NUMBER() OVER(ORDER BY price DESC) AS row_no
+FROM Products;
+
+-- Query 34: Rank all products based on their price (highest price gets Rank 1).
+SELECT
+    product_name,
+    price,
+    RANK() OVER(ORDER BY price DESC) AS product_rank
+FROM Products;
+
+-- Query 35: Rank all products based on price without skipping any rank if two or more products have the same price.
+SELECT
+    product_name,
+    price,
+    DENSE_RANK() OVER(ORDER BY price DESC) AS product_rank
+FROM Products;
+
+-- Query 36: Show each order along with the previous order's total amount.
+SELECT order_id,order_date,total_amount,
+LAG(total_amount) OVER(ORDER BY order_date DESC) AS previous_order_amount
+FROM Orders;
+
+-- Query 37: Display each order along with the amount of the next order.
+SELECT
+    order_id,
+    order_date,
+    total_amount,
+    LEAD(total_amount) OVER(ORDER BY order_date) AS next_order_amount
+FROM Orders;
+
+-- Query 38: Calculate the cumulative (running) total of sales based on order date.
+SELECT
+    order_id,
+    order_date,
+    total_amount,
+    SUM(total_amount) OVER (ORDER BY order_date) AS running_total
+FROM Orders;
+
+-- Query 39: Highest Priced Product in Each Category
+SELECT category_name,product_name,price
+FROM(
+SELECT c.category_name,p.product_name,p.price,
+ROW_NUMBER() OVER(PARTITION BY c.category_id
+            ORDER BY p.price DESC) AS rn
+            FROM Products p
+            join Categories c
+            ON p.category_id = c.category_id
+) ranked_products
+WHERE rn = 1;
+
+-- Query 40: Total Sales by Category
+SELECT
+    c.category_name,
+    SUM(oi.quantity * oi.price) AS total_sales
+FROM Categories c
+JOIN Products p
+    ON c.category_id = p.category_id
+JOIN Order_Items oi
+    ON p.product_id = oi.product_id
+GROUP BY c.category_name
+ORDER BY total_sales DESC;
