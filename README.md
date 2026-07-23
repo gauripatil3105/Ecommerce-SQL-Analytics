@@ -111,14 +111,13 @@ Ecommerce-SQL-Analytics/
 
 ---
 
+
 ## 📌 ER Diagram
 
 The ER Diagram illustrates the relationships between all tables in the database.
 
-File:
-- `ER_Diagram.png`
-
----
+Location:
+- `screenshots/ER_Diagram.png`
 
 ## 📷 Screenshots
 
